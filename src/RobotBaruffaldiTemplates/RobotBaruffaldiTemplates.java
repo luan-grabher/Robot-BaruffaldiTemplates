@@ -1,4 +1,4 @@
-package ContabilityTemplateImportation;
+package RobotBaruffaldiTemplates;
 
 import Entity.Executavel;
 import JExcel.XLSX;
@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import org.ini4j.Ini;
 
-public class Main {
+public class RobotBaruffaldiTemplates {
 
     private static String nomeApp = "";
-    private static Ini ini = null;
+    public static Ini ini = null;
+    public static Integer mes = 1;
+    public static Integer ano = 1;
 
     public static String testParameters = "";
 
@@ -39,13 +41,17 @@ public class Main {
             String pastaAnual = ini.get("Pastas", "anual");
             String pastaMensal = ini.get("Pastas", "mensal");
 
-            int mes = Integer.valueOf(robo.getParametro("mes"));
+            mes = Integer.valueOf(robo.getParametro("mes"));
             mes = mes >= 1 && mes <= 12 ? mes : 1;
-            int ano = Integer.valueOf(robo.getParametro("ano"));
-
+            ano = Integer.valueOf(robo.getParametro("ano"));
+                       
             nomeApp = "Importação " + pastaEmpresa + " - " + ini.get("Config", "nome") + " " + mes + "/" + ano;
 
             StringBuilder returnExecutions = new StringBuilder();
+            
+            /*Prepara arquivos*/
+            PrepareFiles prepare = new PrepareFiles();
+            returnExecutions.append("\n").append(prepare.prepare());
 
             String[] templates = ini.get("Config", "templates").split(";");
             //Para cada template pega as informações
@@ -148,11 +154,12 @@ public class Main {
             importationC.getXlsxCols().putAll((Map<String, Map<String, String>>) compararConfig.get("colunas"));
         }
 
-        ControleTemplates controle = new ControleTemplates(mes, ano);
+        ControleTemplates controle = new ControleTemplates(mes,ano);
         controle.setPastaEscMensal(pastaEmpresa);
-        controle.setPasta(pastaAnual, pastaMensal);
+        controle.setPasta(pastaAnual, pastaMensal);      
 
-        Map<String, Executavel> execs = new LinkedHashMap<>();
+        Map<String, Executavel> execs = new LinkedHashMap<>();              
+        
         execs.put("Procurando arquivo " + templateConfig.get("filtroArquivo"), controle.new defineArquivoNaImportacao((String) templateConfig.get("filtroArquivo"), importation));
 
         if (compararConfig != null) {

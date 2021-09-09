@@ -1,6 +1,6 @@
 package teste;
 
-import ContabilityTemplateImportation.Main;
+import RobotBaruffaldiTemplates.RobotBaruffaldiTemplates;
 
 public class teste {
 
@@ -11,9 +11,9 @@ public class teste {
         parametros.append("[ano:2021]");
         parametros.append("[ini:robot-pantano]");
 
-        Main.testParameters = parametros.toString();
+        RobotBaruffaldiTemplates.testParameters = parametros.toString();
         args = new String[]{"test"};
 
-        Main.main(args);
+        RobotBaruffaldiTemplates.main(args);
     }
 }
