@@ -19,7 +19,7 @@ public class RobotBaruffaldiTemplates {
     private static String nomeApp = "";
     public static Ini ini = null;
     public static Integer mes = 1;
-    public static Integer ano = 1;
+    public static Integer ano = 2021;
 
     public static String testParameters = "";
 
